@@ -111,9 +111,11 @@
         <p v-else>
           ({{ getSubCategoryName }}) ({{ source.order }}) -  صورت سوال :
         </p>
-        <v-img
-          :src="source.statement_photo"
-        />
+        <div v-for="statement_photo in source.statement_photo">
+          <v-img
+              :src="statement_photo"
+          />
+        </div>
       </v-col>
     </v-row>
     <v-row
@@ -127,7 +129,7 @@
         :class="{ choice: true, renderedPanel: true, active: choice.answer, ltr: isLtr }"
       >
         <vue-katex
-          :input="(choiceNumber[index]) + choice.title"
+          :input="(index + 1) + ') ' + choice.title"
           :ltr="isLtrQuestion"
         />
       </v-col>
@@ -155,17 +157,13 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import {mixinQuiz, mixinWindowSize} from '@/mixin/Mixins'
 import $ from "jquery";
 import API_ADDRESS from "@/api/Addresses"
-import VueConfirmDialog from 'vue-confirm-dialog'
 import axios from 'axios'
 import {QuestSubcategoryList} from "@/models/QuestSubcategory";
 import VueKatex from '@/components/VueKatex'
 
-Vue.use(VueConfirmDialog)
-Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 
 export default {
   name: 'Item',

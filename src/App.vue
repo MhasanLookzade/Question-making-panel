@@ -146,13 +146,18 @@
 </template>
 
 <script>
-import './assets/Fonts/Flaticons/css/uicons-regular-rounded.css'
-import './assets/Fonts/Flaticons/css/uicons-bold-rounded.css'
-import VueConfirmDialog from 'vue-confirm-dialog'
-import {mixinAuth, mixinQuiz, mixinDrawer, mixinWindowSize} from '@/mixin/Mixins'
+import Vue from 'vue'
 import '@/assets/scss/app.scss'
 import '@/assets/scss/font.scss'
 import '@mdi/font/css/materialdesignicons.css'
+import './assets/Fonts/Flaticons/css/uicons-regular-rounded.css'
+import './assets/Fonts/Flaticons/css/uicons-bold-rounded.css'
+import {mixinAuth, mixinQuiz, mixinDrawer, mixinWindowSize} from '@/mixin/Mixins'
+import VueConfirmDialog from 'vue-confirm-dialog'
+
+Vue.use(VueConfirmDialog)
+Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
+
 import {
   SideMenu_Dashboard,
   SideMenu_MapOfQuestions,
@@ -164,7 +169,7 @@ import {
 export default {
   name: 'App',
   components: {
-    VueConfirmDialog,
+    // VueConfirmDialog,
     TopMenu_OnlineQuiz,
     TopMenu_Dashboard,
     SideMenu_Dashboard,

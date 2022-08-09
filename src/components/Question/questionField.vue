@@ -5,15 +5,30 @@
       cols="12"
     >
       <vue-tiptap-katex
+        id="vue-tiptap-katex"
         ref="tiptap"
+        :value="value"
         :loading="loading"
-        :server="{ url: imageUrl, headers: { Authentication: 'Bearer ' + $store.getters['Auth/accessToken'] } }"
-        :options="{ bubbleMenu: false, floatingMenu: false, poem: true, reading: true, persianKeyboard: true, mathliveOptions: { smartFence: false } }"
+        :options="{
+          bubbleMenu: false,
+          floatingMenu: false,
+          poem: true,
+          reading: true,
+          persianKeyboard: true,
+          onResizeEnd: onResizeEnd,
+          mathliveOptions: { smartFence: false },
+          uploadServer: {
+            url: imageUrl,
+            instantUpload: true,
+            headers: { Authorization: 'Bearer ' + $store.getters['Auth/accessToken'] }
+          }
+        }"
+        @input="$emit('input', $event)"
       />
     </v-col>
     <!-- eslint-disable vue/no-v-html -->
     <v-col v-else>
-      <vue-katex :input="html" />
+      <vue-katex :input="value" />
     </v-col>
   </v-row>
 </template>
@@ -49,7 +64,6 @@ export default {
   },
   data() {
     return {
-      html: '',
       loading: false,
     }
   },
@@ -58,27 +72,13 @@ export default {
       return API_ADDRESS.question.uploadImage(this.questionId)
     }
   },
-  created () {
-    this.loading = true
-    this.getHtmlValueFromValueProp()
-  },
-  mounted () {
-    if (this.$refs.tiptap) {
-      this.$refs.tiptap.setContent(this.html)
-    }
-  },
   methods: {
+    onResizeEnd (url, width, height) {
+      return url.split('?w=')[0] + '?w=' + width + '&h=' + height
+    },
     getContent () {
       this.$emit('input', this.$refs.tiptap.getContent())
-    },
-    getHtmlValueFromValueProp () {
-      let html = this.value
-      if (html === null || typeof html === 'undefined') {
-        html = ''
-      }
-      this.html = html
-      this.loading = false
-    },
+    }
   }
 }
 </script>
@@ -87,6 +87,20 @@ export default {
 </style>
 
 <style>
+#vue-tiptap-katex  .accent {
+  background-color: unset !important;
+  border-color: unset !important;
+}
+
+#vue-tiptap-katex .overline {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+  text-transform: unset !important;
+  font-family: inherit !important;
+}
+
 .katex * {
   font-family: KaTeX_Main;
 }
