@@ -58,6 +58,7 @@ const API_ADDRESS = {
     }
   },
   exam: {
+    exportExcel: lumenServer + '/exam?excel_export=1',
     showExam: (examId) => lumenServer + '/exam/' + examId,
     editExam: lumenServer + '/exam',
     copyCoefficient: lumenServer + '/exam-question/zirgorooh/copy',
@@ -197,7 +198,8 @@ const API_ADDRESS = {
     },
     uploadImage (questionId) {
       return lumenServer + '/question/upload/' + questionId
-    }
+    },
+    printQuestions : lumenServer + '/question/export'
   },
   questionSubcategory: {
     base: lumenServer + '/sub-category',
